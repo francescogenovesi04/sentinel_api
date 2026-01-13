@@ -59,3 +59,11 @@ Bash
 
 celery -A core worker --loglevel=info
 
+Terminale C: Celery Beat (L'orologio)
+
+Gestisce i controlli automatici ogni 5 minuti basandosi sul tasto Auto ON/OFF.
+Bash
+
+source venv/bin/activate
+celery -A core beat --loglevel=info
+

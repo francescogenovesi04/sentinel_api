@@ -67,3 +67,15 @@ Bash
 source venv/bin/activate
 celery -A core beat --loglevel=info
 
+## Come funziona Sentinel?
+
+    Ogni volta che aggiungi un'API, il database crea una nuova riga nel modello TargetAPI.
+
+    Da quel momento:
+
+    Il Worker sa che deve scaricare quel file.
+
+    L'AI sa che deve confrontare ogni nuova versione con quella precedentemente salvata nel campo last_content.
+
+    Il Beat (l'orologio) aggiunge quell'API al giro di ronda ogni 5 minuti, a patto che il toggle sia su ON.
+

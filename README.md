@@ -79,3 +79,34 @@ celery -A core beat --loglevel=info
 
     Il Beat (l'orologio) aggiunge quell'API al giro di ronda ogni 5 minuti, a patto che il toggle sia su ON.
 
+1. Il Cuore: Django (Python)
+
+È il framework principale che tiene insieme tutto.
+
+    Perché Django? È solido, "batteries-included" e gestisce la sicurezza e il database (SQLite in questo caso) in modo professionale.
+
+    Il Ruolo: Gestisce l'Admin, salva le versioni delle API e coordina le chiamate verso OpenAI e il frontend.
+
+2. Il Cervello: OpenAI API (GPT-4o)
+
+Non è una semplice ricerca di testo, ma un'analisi semantica.
+
+    La Tecnologia: Usiamo il modello GPT-4o (o 4o-mini) per leggere due file JSON e capire "cosa significa" il cambiamento.
+
+    Il Vantaggio: Mentre un software normale ti direbbe solo "la riga 10 è cambiata", l'AI ti spiega: "Attenzione, hanno rimosso il parametro della chiave API, il tuo codice si romperà".
+
+3. Il Braccio Operativo: Celery & Redis
+
+Questa è la parte che trasforma un sito in un software "pro".
+
+    Celery: È il gestore dei compiti in background. Grazie a lui, l'analisi pesante dell'AI non blocca il sito; il sito rimane veloce mentre Celery lavora "dietro le quinte".
+
+    Redis: Funziona da "ufficio postale" (Message Broker). Django imbuca i messaggi in Redis e Celery li passa a ritirare per eseguirli.
+
+4. Il Volto: Tailwind CSS & HTMX
+
+Qui hai evitato di scrivere migliaia di righe di JavaScript complicato (come React o Vue).
+
+    Tailwind CSS: Ti ha permesso di creare quel design scuro e moderno usando solo classi pronte, senza scrivere CSS da zero.
+
+    HTMX: È la vera magia. Ti permette di aggiornare le card o cambiare il toggle (Auto ON/OFF) senza ricaricare mai la pagina. Invia una richiesta al server e sostituisce solo il pezzetto di HTML necessario.

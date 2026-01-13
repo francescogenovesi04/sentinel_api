@@ -2,6 +2,8 @@
 
 SentinelAPI è un sistema di monitoraggio intelligente per API esterne. Utilizza Django e OpenAI per rilevare automaticamente cambiamenti nelle documentazioni OpenAPI/Swagger e avvisare gli sviluppatori sulle "breaking changes" rilevate.
 
+Monitoraggio di Terze Parti: Inserisci le API che usi nel tuo lavoro o nei tuoi progetti (es. Stripe, PayPal, o l'API di un fornitore). Se loro cambiano qualcosa e il tuo codice si rompe, SentinelAPI te lo dice prima che i tuoi utenti se ne accorgano.
+
 ##  Funzionalità principali
 - **Monitoraggio Asincrono:** Gestione dei task in background tramite Celery e Redis.
 - **Analisi AI:** Integrazione con OpenAI (GPT-4o-mini) per spiegare i cambiamenti tecnici in linguaggio naturale.

@@ -1,4 +1,3 @@
-Ecco una versione ottimizzata del README, strutturata per essere professionale, leggibile e pronta per GitHub.
 🛡️ SentinelAPI
 AI-Powered Breaking Change Monitor
 

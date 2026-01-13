@@ -110,3 +110,37 @@ Qui hai evitato di scrivere migliaia di righe di JavaScript complicato (come Rea
     Tailwind CSS: Ti ha permesso di creare quel design scuro e moderno usando solo classi pronte, senza scrivere CSS da zero.
 
     HTMX: È la vera magia. Ti permette di aggiornare le card o cambiare il toggle (Auto ON/OFF) senza ricaricare mai la pagina. Invia una richiesta al server e sostituisce solo il pezzetto di HTML necessario.
+
+    1. La Scintilla (Chi attiva il flow)
+
+## work flow
+
+    Il processo può iniziare in due modi:
+
+    Manualmente: Tu clicchi il tasto "Analizza Ora" sulla Dashboard; HTMX invia una richiesta al server senza ricaricare la pagina.
+
+    Automaticamente: Celery Beat (l'orologio) controlla ogni 5 minuti quali API hanno il toggle su "Auto: ON" e invia un comando al Worker.
+
+2. Il Recupero dei Dati (Il ruolo di Django e lo Scraper)
+
+    Django (tramite il Celery Worker) recupera dal database la "VECCHIA DOC" (salvata nel campo last_content).
+
+    Contemporaneamente, il sistema effettua uno scraping in tempo reale dell'URL Swagger per scaricare la "NUOVA DOC" (il JSON attuale dell'API).
+
+3. Il Confronto (Il "Chi" e il "Come")
+
+Qui entra in gioco il vero cervello del sistema: OpenAI GPT-4o.
+
+    Il Worker invia entrambi i JSON (vecchio e nuovo) alle API di OpenAI.
+
+    L'AI non si limita a vedere se le virgole sono cambiate, ma esegue un'analisi semantica.
+
+    GPT-4o agisce come un esperto programmatore: legge le differenze e decide quali sono "Breaking Changes" (modifiche critiche) e quali sono trascurabili.
+
+4. L'Aggiornamento Finale
+
+    Il Report: L'AI restituisce una spiegazione testuale dei cambiamenti.
+
+    Salvataggio: Django salva il nuovo report nel campo last_analysis e sovrascrive last_content con il nuovo JSON (che diventerà il "passato" per il prossimo controllo).
+
+    Visualizzazione: Se il controllo è manuale, HTMX aggiorna istantaneamente la card sulla Dashboard mostrandoti il risultato.

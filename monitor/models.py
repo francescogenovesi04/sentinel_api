@@ -8,6 +8,7 @@ class TargetAPI(models.Model):
     last_status = models.IntegerField(null=True, blank=True)
     last_check = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    is_auto_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

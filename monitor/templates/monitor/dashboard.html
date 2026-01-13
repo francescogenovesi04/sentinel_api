@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body class="bg-slate-900 text-white min-h-screen p-8">
-
     <script>
         document.body.addEventListener('htmx:configRequest', (event) => {
             event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
@@ -16,52 +15,20 @@
 
     <div class="max-w-6xl mx-auto">
         <header class="mb-12 flex justify-between items-center">
-            <h1 class="text-4xl font-bold tracking-tight text-blue-400">🛡️ SentinelAPI</h1>
-            <div class="flex items-center gap-4">
-                <span class="bg-blue-900/50 border border-blue-500 text-blue-300 px-4 py-1 rounded-full text-sm">
-                    System Active
-                </span>
-                <a href="/admin" class="text-sm text-slate-400 hover:text-white underline">Vai all'Admin</a>
-            </div>
+            <h1 class="text-4xl font-bold tracking-tight text-blue-400 italic">🛡️ SentinelAPI</h1>
+            <a href="/admin" class="text-xs text-slate-500 hover:text-white underline">Pannello Admin</a>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for api in apis %}
-            <div class="api-card bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-xl transition-all hover:border-blue-500">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-xl font-semibold">{{ api.name }}</h2>
-                    <span class="px-2 py-1 rounded text-xs font-bold {% if api.last_status == 200 %}bg-green-900 text-green-300{% else %}bg-red-900 text-red-300{% endif %}">
-                        HTTP {{ api.last_status }}
-                    </span>
-                </div>
-
-                <p class="text-slate-400 text-sm mb-4 truncate">{{ api.swagger_url }}</p>
-
-                <div class="bg-slate-900/50 rounded-lg p-4 mb-4 border border-slate-700">
-                    <h3 class="text-xs uppercase text-slate-500 font-bold mb-2">Analisi AI</h3>
-                    <p class="text-sm text-slate-300 italic">
-                        {{ api.last_analysis|default:"Nessun cambiamento rilevato o analisi in attesa." }}
-                    </p>
-                </div>
-
-                <button
-                    hx-post="/check/{{ api.pk }}/"
-                    hx-target="closest .api-card"
-                    hx-swap="innerHTML"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition flex items-center justify-center gap-2">
-                    <span class="htmx-indicator animate-spin text-lg">⏳</span>
-                    Analizza Ora
-                </button>
-            </div>
+                {% include 'monitor/api_card.html' %}
             {% endfor %}
         </div>
     </div>
 
     <style>
-        /* Nasconde l'icona di caricamento finché HTMX non è attivo */
         .htmx-indicator { display: none; }
         .htmx-request .htmx-indicator { display: inline-block; }
-        .htmx-request.button { opacity: 0.5; pointer-events: none; }
     </style>
 </body>
 </html>

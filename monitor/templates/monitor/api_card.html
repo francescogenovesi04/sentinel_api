@@ -1,0 +1,42 @@
+<div class="api-card bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-2xl transition-all hover:border-blue-500/50" id="api-card-{{ api.pk }}">
+
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-white">{{ api.name }}</h2>
+
+        <div class="flex items-center cursor-pointer group"
+             hx-post="/toggle/{{ api.pk }}/"
+             hx-target="#api-card-{{ api.pk }}"
+             hx-swap="outerHTML">
+            <span class="text-[10px] uppercase font-bold {% if api.is_auto_active %}text-green-400{% else %}text-red-400{% endif %} mr-2">
+                {% if api.is_auto_active %}AUTO: ON{% else %}AUTO: OFF{% endif %}
+            </span>
+            <div class="relative inline-flex items-center">
+                <input type="checkbox" {% if api.is_auto_active %}checked{% endif %} class="sr-only peer">
+                <div class="w-8 h-4 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-500"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-2 mb-4">
+        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {% if api.last_status == 200 %}bg-green-900/50 text-green-400{% else %}bg-red-900/50 text-red-400{% endif %}">
+            HTTP {{ api.last_status|default:"None" }}
+        </span>
+        <p class="text-slate-500 text-[11px] truncate">{{ api.swagger_url }}</p>
+    </div>
+
+    <div class="bg-slate-900/80 rounded-lg p-4 mb-4 border border-slate-700/50 min-h-[120px]">
+        <h3 class="text-[10px] uppercase text-slate-500 font-black mb-2 tracking-tighter">Analisi AI</h3>
+        <div class="text-sm text-slate-300 italic leading-relaxed whitespace-pre-line">
+            {{ api.last_analysis|default:"Nessun cambiamento rilevato o analisi in corso..." }}
+        </div>
+    </div>
+
+    <button
+        hx-post="/check/{{ api.pk }}/"
+        hx-target="#api-card-{{ api.pk }}"
+        hx-swap="outerHTML"
+        class="w-full bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+        <span class="htmx-indicator animate-spin">⏳</span>
+        Analizza Ora
+    </button>
+</div>

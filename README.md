@@ -22,10 +22,10 @@ Nota sull'ambiente di sviluppo:
 
 0. Installa Redis (se non lo hai già)
  
-    ```
-    sudo apt update
-    sudo apt install redis-server
-    ```
+ ```
+ sudo apt update
+ sudo apt install redis-server
+ ```
    
 2. Clonazione del Progetto
 

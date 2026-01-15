@@ -1,53 +1,53 @@
 ### SentinelAPI
 AI-Powered Breaking Change Monitor
 
-SentinelAPI è un sistema di monitoraggio intelligente progettato per sorvegliare le API esterne in tempo reale. Grazie all'integrazione tra Django e OpenAI, il sistema rileva automaticamente ogni modifica nelle documentazioni OpenAPI/Swagger, traducendo complessi cambiamenti tecnici in spiegazioni semplici e segnalando tempestivamente le "breaking changes".
+SentinelAPI is an intelligent monitoring system designed to oversee external APIs in real time. Leveraging the integration of Django and OpenAI, the system automatically detects any changes in OpenAPI/Swagger documentation, translating complex technical shifts into simple explanations and promptly flagging breaking changes.
 
-## Funzionalità Principali
+## Key Features
 
--Monitoraggio Asincrono: Gestione efficiente di task pesanti in background tramite Celery e Redis.
+   -Asynchronous Monitoring: Efficient management of heavy background tasks using Celery and Redis.
 
--Analisi AI Semantica: Utilizza GPT-4o/mini per interpretare il significato tecnico dei cambiamenti, non solo le differenze testuali.
+   -Semantic AI Analysis: Leverages GPT-4o/mini to interpret the technical significance of changes, moving beyond simple textual differences.
 
--Dashboard Moderna: Interfaccia reattiva sviluppata con Tailwind CSS e HTMX per aggiornamenti istantanei senza ricaricare la pagina.
+   -Modern Dashboard: Responsive interface built with Tailwind CSS and HTMX for instant updates without page reloads.
 
--Controllo Granulare: Gestione centralizzata dei target tramite Admin Panel con possibilità di attivare/disattivare il monitoraggio per ogni singola risorsa.
+   -Granular Control: Centralized target management via Admin Panel, with the ability to enable or disable monitoring for each individual resource.
 
 
-## Installazione e Setup
+## Installation and Setup
 
-Nota sull'ambiente di sviluppo:
+Development Environment Note:
 
-**Questa guida al setup è ottimizzata per Linux Mint. Tuttavia, i passaggi sono pienamente compatibili con Ubuntu, Debian e la maggior parte delle distribuzioni basate su kernel Linux che utilizzano il gestore pacchetti apt.**
+**This setup guide is optimized for Linux Mint. However, the steps are fully compatible with Ubuntu, Debian, and most Linux-based distributions using the apt package manager.**
 
-0. Installa Redis (se non lo hai già)
+0. Install Redis (if you haven't already)
  
  ```
  sudo apt update
  sudo apt install redis-server
  ```
    
-2. Clonazione del Progetto
+1. Project Cloning
 
 ```
 git clone <tuo-link-github>
 cd sentinel_api
 ```
 
-2. Ambiente Virtuale
+2. Virtual environment
 
 ```
 python -m venv venv
 source venv/bin/activate 
 ```
 
-3. Installazione Dipendenze
+3. Dependency Installation
 
 ```pip install -r requirements.txt```
 
-4. Configurazione Variabili d'Ambiente
+4. Environment Variable Configuration
 
-Crea un file .env nella root del progetto:
+Create a .env file in the root of the project
 
 ```
 OPENAI_API_KEY=la_tua_chiave_qui
@@ -55,7 +55,7 @@ SECRET_KEY=tua_secret_key
 DEBUG=True
 ```
 
-5. Inizializzazione Database
+5. Database installation
    
 ```
 python manage.py migrate
@@ -64,27 +64,26 @@ python manage.py createsuperuser
 
 ## Workflow & Daily Routine
 
-Per il pieno funzionamento di SentinelAPI è necessario avviare i seguenti servizi in tre terminali separati:
-Avvio Servizi
+To ensure SentinelAPI is fully operational, you must start the following services in three separate terminals:
 
--Terminale A (Web Server): 
+-Terminal A (Web Server): 
 
 ```python manage.py runserver```
 
--Terminale B (Celery Worker):
+-Terminal B (Celery Worker):
 
 ```celery -A core worker --loglevel=info```
 
--Terminale C (Celery Beat) (Gestisce la scansione automatica programmata, es. ogni 5 minuti):
+-Terminal C (Celery Beat) (Manages scheduled automatic scanning, e.g., every 5 minutes):
 
 ```celery -A core beat --loglevel=info```
     
-## Come Funziona
+## How It Works
 
--Aggiunta Target: Inserisci l'URL di uno Swagger/OpenAPI JSON nell'Admin Panel di Django.
+-Add Target: Enter the URL of a Swagger/OpenAPI JSON in the Django Admin Panel.
 
--Monitoraggio: * Manuale: Clicca su "Analizza Ora" nella dashboard per un controllo istantaneo.
+-Monitoring: - Manual: Click "Analyze Now" on the dashboard for an instant check.
 
--Automatico: Se il toggle è su ON, Celery Beat avvia il controllo ciclicamente.
+-Automatic: If the toggle is set to ON, Celery Beat runs the check periodically.
 
--Confronto AI: Il sistema scarica la documentazione live, la confronta con l'ultima versione salvata e genera un report dettagliato tramite GPT-4o, evidenziando se le modifiche richiederanno interventi sul tuo codice.
+-AI Comparison: The system downloads the live documentation, compares it with the last saved version, and generates a detailed report via GPT-4o, highlighting whether the changes will require updates to your code.
